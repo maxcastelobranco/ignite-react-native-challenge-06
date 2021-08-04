@@ -12,6 +12,8 @@ interface CardAnimationProps extends ViewProps {
   children: React.ReactNode;
 }
 
+const ANIMATION_DURATION = 1000
+
 export function CardAnimation({ children, ...rest }: CardAnimationProps) {
   const { width: displayWidth } = useWindowDimensions();
   const cardOpacity = useSharedValue(0);
@@ -19,15 +21,14 @@ export function CardAnimation({ children, ...rest }: CardAnimationProps) {
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      // TODO - setup animated style
+      opacity: cardOpacity.value,
+      transform: [{translateX: cardOffset.value}]
     }
   })
 
   useEffect(() => {
-    /**
-     * TODO - setup cardOpacity.value and cardOffset.value with
-     * withTiming()
-     */
+    cardOpacity.value = withTiming(1, {duration: ANIMATION_DURATION})
+    cardOffset.value = withTiming(0, {duration: ANIMATION_DURATION})
   }, []);
 
   return (
